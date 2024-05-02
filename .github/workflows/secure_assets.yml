@@ -44,29 +44,29 @@ jobs:
           name: assets.txt
           path: ./assets.txt
 
-        - name: Update inventory issue
+      - name: Update inventory issue
         uses: actions/github-script@v5
         with:
-            script: |
-            const dateCreated = "${{ needs.check-assets.outputs.dateCreated }}";
-            const author = "${{ needs.check-assets.outputs.author }}";
-            const issueOrPrLink = "${{ needs.check-assets.outputs.issueOrPrLink }}";
-            const commentLink = "${{ needs.check-assets.outputs.commentLink }}";
-            const repoName = "${{ needs.check-assets.outputs.repoName }}";
+          script: |
+            const dateCreated = "${{ steps.assets.outputs.dateCreated }}";
+            const author = "${{ steps.assets.outputs.author }}";
+            const issueOrPrLink = "${{ steps.assets.outputs.issueOrPrLink }}";
+            const commentLink = "${{ steps.assets.outputs.commentLink }}";
+            const repoName = "${{ steps.assets.outputs.repoName }}";
             const issueNumber = "25";
             const newLine = `| ${dateCreated} | ${author} | ${issueOrPrLink} | ${commentLink} | ${repoName} |`;
 
             const issue = await github.issues.get({
-                owner: github.context.repo.owner,
-                repo: github.context.repo.repo,
-                issue_number: issueNumber
+              owner: github.context.repo.owner,
+              repo: github.context.repo.repo,
+              issue_number: issueNumber
             });
 
             const issueBody = issue.data.body + '\n' + newLine;
 
             github.issues.update({
-                owner: github.context.repo.owner,
-                repo: github.context.repo.repo,
-                issue_number: issueNumber,
-                body: issueBody
+              owner: github.context.repo.owner,
+              repo: github.context.repo.repo,
+              issue_number: issueNumber,
+              body: issueBody
             });
