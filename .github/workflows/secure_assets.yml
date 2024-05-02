@@ -27,14 +27,8 @@ jobs:
               fs.writeFileSync('assets.txt', `Issue/PR link: ${issueOrPrLink}\nRepo name: ${repoName}`);
             }
 
-      - name: Commit and push if changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -A
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Add assets.txt"
-            git push
-          fi
+      - name: Upload assets.txt
+        uses: actions/upload-artifact@v2
+        with:
+          name: assets.txt
+          path: ./assets.txt
