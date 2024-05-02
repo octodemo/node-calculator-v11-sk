@@ -12,3 +12,6 @@ body:
       | Date Created | Author | Issue/PR Link | Comment Link | Repo Name |
       | ------------ | ------ | ------------- | ------------ | --------- |
       |              |        |               |              |           |
+- type: textarea
+  attributes:
+    label: "Description"
