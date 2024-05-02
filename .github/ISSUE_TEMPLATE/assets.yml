@@ -1,11 +1,14 @@
----
 name: Asset Tracking
 description: Use this template to track assets in the repository.
 title: Asset Tracking
-labels: asset-tracking
+labels: [asset-tracking]
+assignees: []
+body:
+- type: markdown
+  attributes:
+    value: |
+      ## Asset Tracking
 
----
-
-| Date Created | Author | Issue/PR Link | Comment Link | Repo Name |
-| ------------ | ------ | ------------- | ------------ | --------- |
-|              |        |               |              |           |
+      | Date Created | Author | Issue/PR Link | Comment Link | Repo Name |
+      | ------------ | ------ | ------------- | ------------ | --------- |
+      |              |        |               |              |           |
