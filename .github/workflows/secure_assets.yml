@@ -11,11 +11,18 @@ on:
 jobs:
   check-assets:
     runs-on: ubuntu-latest
+    outputs:
+      dateCreated: ${{ steps.assets.outputs.dateCreated }}
+      author: ${{ steps.assets.outputs.author }}
+      issueOrPrLink: ${{ steps.assets.outputs.issueOrPrLink }}
+      commentLink: ${{ steps.assets.outputs.commentLink }}
+      repoName: ${{ steps.assets.outputs.repoName }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Check for assets
+        id: assets
         uses: actions/github-script@v5
         with:
           script: |
@@ -28,6 +35,13 @@ jobs:
               const commentLink = context.payload.comment?.html_url;
               const repoName = context.repo.repo;
               fs.writeFileSync('assets.txt', `Date created: ${dateCreated}\nAuthor: ${author}\nIssue/PR link: ${issueOrPrLink}\nComment link: ${commentLink}\nRepo name: ${repoName}`);
+              return {
+                dateCreated,
+                author,
+                issueOrPrLink,
+                commentLink,
+                repoName
+              };
             }
 
       - name: Upload assets.txt
@@ -35,3 +49,28 @@ jobs:
         with:
           name: assets.txt
           path: ./assets.txt
+
+  update-inventory:
+    needs: check-assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Update inventory issue
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const dateCreated = "${{ needs.check-assets.outputs.dateCreated }}";
+            const author = "${{ needs.check-assets.outputs.author }}";
+            const issueOrPrLink = "${{ needs.check-assets.outputs.issueOrPrLink }}";
+            const commentLink = "${{ needs.check-assets.outputs.commentLink }}";
+            const repoName = "${{ needs.check-assets.outputs.repoName }}";
+            const issueNumber = /* the number of your inventory issue */;
+            const issueBody = `| ${dateCreated} | ${author} | ${issueOrPrLink} | ${commentLink} | ${repoName} |`;
+            github.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: issueBody
+            });
