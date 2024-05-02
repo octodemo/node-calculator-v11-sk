@@ -1,0 +1,40 @@
+name: Check for assets
+
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created, edited]
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  check-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Check for assets
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const issueOrPrBody = context.payload.issue?.body || context.payload.pull_request?.body || context.payload.comment?.body;
+            if (issueOrPrBody.includes('/assets')) {
+              const fs = require('fs');
+              const issueOrPrLink = context.payload.issue?.html_url || context.payload.pull_request?.html_url || context.payload.comment?.html_url;
+              const repoName = context.repo.repo;
+              fs.writeFileSync('assets.txt', `Issue/PR link: ${issueOrPrLink}\nRepo name: ${repoName}`);
+            }
+
+      - name: Commit and push if changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Add assets.txt"
+            git push
+          fi
