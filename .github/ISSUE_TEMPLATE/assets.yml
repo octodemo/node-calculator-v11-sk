@@ -3,20 +3,9 @@ name: Asset Tracking
 description: Use this template to track assets in the repository.
 title: Asset Tracking
 labels: asset-tracking
-assignees: ''
 
 ---
 
-<!-- Provide a general summary of the asset in the Title above -->
-
-## Asset Details
-
-**Date Created**: <!--- Please enter the date this asset was created -->
-**Author**: <!--- Please enter the author of this asset -->
-**Issue/PR Link**: <!--- Please link to the issue or pull request related to this asset -->
-**Comment Link**: <!--- Please link to the comment if there is one -->
-**Repo Name**: <!--- Please enter the name of the repository where the asset is located -->
-
-## More Information
-
-<!--- If you want to add more details about this asset, do so here -->
+| Date Created | Author | Issue/PR Link | Comment Link | Repo Name |
+| ------------ | ------ | ------------- | ------------ | --------- |
+|              |        |               |              |           |
