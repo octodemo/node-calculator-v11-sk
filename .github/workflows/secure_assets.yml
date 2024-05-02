@@ -22,9 +22,11 @@ jobs:
             const issueOrPrBody = context.payload.issue?.body || context.payload.pull_request?.body || context.payload.comment?.body;
             if (issueOrPrBody.includes('/assets')) {
               const fs = require('fs');
-              const issueOrPrLink = context.payload.issue?.html_url || context.payload.pull_request?.html_url || context.payload.comment?.html_url;
+              const author = context.payload.sender.login;
+              const issueOrPrLink = context.payload.issue?.html_url || context.payload.pull_request?.html_url;
+              const commentLink = context.payload.comment?.html_url;
               const repoName = context.repo.repo;
-              fs.writeFileSync('assets.txt', `Issue/PR link: ${issueOrPrLink}\nRepo name: ${repoName}`);
+              fs.writeFileSync('assets.txt', `Author: ${author}\nIssue/PR link: ${issueOrPrLink}\nComment link: ${commentLink}\nRepo name: ${repoName}`);
             }
 
       - name: Upload assets.txt
