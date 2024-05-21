@@ -19,7 +19,7 @@ var operation = null;
 function calculate(operand1, operand2, operation) {
     var uri = location.origin + "/arithmetic";
 
-    // TODO: Add operator
+    // Handle the power operation in the switch statement
     switch (operation) {
         case '+':
             uri += "?operation=add";
@@ -32,6 +32,9 @@ function calculate(operand1, operand2, operation) {
             break;
         case '/':
             uri += "?operation=divide";
+            break;
+        case '^': // Add a case for the power operation in the calculate function
+            uri += "?operation=power";
             break;
         default:
             setError();
@@ -138,7 +141,7 @@ document.addEventListener('keypress', (event) => {
         numberPressed(event.key);
     } else if (event.key == '.') {
         decimalPressed();
-    } else if (event.key.match(/^[-*+/]$/)) {
+    } else if (event.key.match(/^[-*+/^]$/)) { // Updated to include '^' for power operation
         operationPressed(event.key);
     } else if (event.key == '=') {
         equalPressed();
