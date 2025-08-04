@@ -22,11 +22,12 @@ exports.calculate = function(req, res) {
     throw new Error("Unspecified operation");
   }
 
-  var operation = operations[req.query.operation];
-
-  if (!operation) {
-    throw new Error("Invalid operation: " + req.query.operation);
+  var operationName = req.query.operation;
+  if (!Object.prototype.hasOwnProperty.call(operations, operationName) ||
+      typeof operations[operationName] !== 'function') {
+    throw new Error("Invalid operation: " + operationName);
   }
+  var operation = operations[operationName];
 
   if (!req.query.operand1 ||
       !req.query.operand1.match(/^(-)?[0-9\.]+(e(-)?[0-9]+)?$/) ||
